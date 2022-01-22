@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  div.content-container
+    div.row
+      h1 #{course.name} -  #{course.department}
+      div
+        a.button(href=`/courses/delete/${course.id}`) Delete
+        a.button(href=`/courses/edit/${course.id}`) Edit
+    div=course.instructor_name
+    p=course.description
+
+
+    h3 Students
+    div todo

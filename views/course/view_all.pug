@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  div.content-container
+    div
+      a.button(href="/courses/add") Add Course
+    table
+        thead
+          tr
+            th Course Title
+            th Department
+            th Instructor
+            th
+        tbody
+          each course in courses
+            tr
+              td=course.name
+              td=course.department
+              td=course.instructor_name
+              td
+                a(href=`/courses/profile/${course.id}`) View Course
