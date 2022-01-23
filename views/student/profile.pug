@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  div.content-container
+    div.row
+      h3 #{student.first_name} #{student.last_name}
+      div
+        a.button(href=`/students/delete/${student.id}`) Delete
+        a.button(href=`/students/edit/${student.id}`) Edit
+    div Grade #{student.grade_level}

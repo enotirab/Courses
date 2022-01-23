@@ -1,0 +1,6 @@
+extends ../layout
+
+block content
+  include ../mixins/studentForm
+  div.content-container
+    +studentForm(student, `/students/add`, `/students`)

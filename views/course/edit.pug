@@ -3,4 +3,4 @@ extends ../layout
 block content
   include ../mixins/courseForm
   div.content-container
-    +courseForm(course, departments, `/courses/edit/${course.id}`, `/courses/profile/${course.id}`)
+    +courseForm(student, departments, `/courses/edit/${student.id}`, `/courses/profile/${student.id}`)

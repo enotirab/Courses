@@ -3,12 +3,12 @@ extends ../layout
 block content
   div.content-container
     div.row
-      h1 #{course.name} -  #{course.department}
+      h1 #{student.name} -  #{student.department}
       div
-        a.button(href=`/courses/delete/${course.id}`) Delete
-        a.button(href=`/courses/edit/${course.id}`) Edit
-    div=course.instructor_name
-    p=course.description
+        a.button(href=`/courses/delete/${student.id}`) Delete
+        a.button(href=`/courses/edit/${student.id}`) Edit
+    div=student.instructor_name
+    p=student.description
 
 
     h3 Students
