@@ -1,4 +1,5 @@
-const {Student} = require('../models');
+const {Student, Course, StudentCourses} = require('../models');
+const sequelize = require("sequelize");
 
 
 //view all
@@ -18,13 +19,43 @@ module.exports.viewAll = async function (req, res) {
 }
 
 
+
+function courseHasStudent(course, student){
+    for(let i = 0; i<course.students.length; i++){
+       if(student.id === course.students[i].id){
+           return true;
+       }
+    }
+
+    return false;
+}
+
 //view profile
 module.exports.viewProfile = async function (req, res) {
 
-    const student = await Student.findByPk(req.params.id);
+    const student = await Student.findByPk(req.params.id, {
+        include: 'courses'
+    });
+
+    const allCourses = await Course.findAll({
+        include: 'students',
+        order: [
+            ['name']
+        ]
+    });
+
+    let availableCourses = [];
+    for(let i = 0; i<allCourses.length; i++){
+        let course = allCourses[i];
+        if(!courseHasStudent(course, student)){
+            availableCourses.push(course);
+        }
+    }
+
 
     res.render('student/profile', {
         student,
+        availableCourses,
     })
 }
 
@@ -97,4 +128,23 @@ module.exports.deleteStudent = async function (req, res) {
 }
 
 
+
+module.exports.enrollStudent = async function(req, res){
+
+    try {
+        console.log({
+            student_id: req.params.id,
+            course_id: req.body.course,
+        })
+        await StudentCourses.create({
+            student_id: req.params.id,
+            course_id: req.body.course,
+        })
+
+        res.redirect(`/students/profile/${req.params.id}`);
+    } catch (error){
+        res.send(error);
+    }
+
+}
 //associate classes todo

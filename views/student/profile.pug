@@ -8,3 +8,34 @@ block content
         a.button(href=`/students/delete/${student.id}`) Delete
         a.button(href=`/students/edit/${student.id}`) Edit
     div Grade #{student.grade_level}
+
+
+
+    div(style="margin-top: 16px;")
+      form(action=`/students/${student.id}/enroll/` method="post")
+        label(for="course") Available Courses
+        select(name="course" id="course" autocomplete=off required)
+          option(value='') Please Select Course
+          each course in availableCourses
+            option(value=course.id) #{course.name}
+        button.button(type="Submit") Enroll
+
+      h3 Courses
+      table
+        thead
+          tr
+            th Course Title
+            th Instructor
+            th Department
+            th
+            th
+        tbody
+            each course in student.courses
+              tr
+                td=course.name
+                td=course.instructor_name
+                td=course.department
+                td
+                  a(href=`/courses/profile/${course.id}`) View Course
+                td
+                  a(href=`/courses/${course.id}/drop/${student.id}`) Drop Course

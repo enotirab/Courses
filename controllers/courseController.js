@@ -1,4 +1,4 @@
-const { Course } = require('../models');
+const { Course, StudentCourses} = require('../models');
 const departments = [
     'Art',
     'English',
@@ -25,7 +25,9 @@ module.exports.viewAll = async function(req, res){
 
 //view profile
 module.exports.viewProfile =  async function (req, res){
-    const course = await Course.findByPk(req.params.id);
+    const course = await Course.findByPk(req.params.id, {
+        include: 'students',
+    });
 
     res.render('course/profile', {
         course
@@ -114,4 +116,15 @@ module.exports.deleteCourse = async function(req, res){
    res.redirect('/courses');
 };
 
+module.exports.dropCourse = async function(req, res){
+
+    await StudentCourses.destroy({
+        where:{
+            student_id: req.params.studentId,
+            course_id: req.params.courseId,
+        }
+    });
+
+    res.redirect(req.header('Referer'));
+}
 //associate students ... todo

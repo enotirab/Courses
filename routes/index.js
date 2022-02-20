@@ -16,6 +16,8 @@ router.get('/courses/edit/:id', courseController.renderEditForm);
 router.post('/courses/edit/:id', courseController.updateCourse);
 router.get('/courses/delete/:id', courseController.deleteCourse);
 
+router.get('/courses/:courseId/drop/:studentId', courseController.dropCourse);
+
 
 router.get('/students', studentController.viewAll);
 router.get('/students/profile/:id', studentController.viewProfile);
@@ -24,6 +26,22 @@ router.post('/students/add', studentController.addStudent);
 router.get('/students/edit/:id', studentController.renderEditForm);
 router.post('/students/edit/:id', studentController.updateStudent);
 router.get('/students/delete/:id', studentController.deleteStudent);
+
+router.post('/students/:id/enroll/', studentController.enrollStudent);
+
+
+router.get('/debug/:student_id/:course_id',async (req, res)=> {
+
+  const { StudentCourses} = require('../models');
+
+  const result = await StudentCourses.create({
+    student_id: req.params.student_id,
+    course_id: req.params.course_id,
+  })
+
+  res.send(result);
+
+});
 
 
 module.exports = router;

@@ -14,8 +14,8 @@ block content
         tbody
           each course in courses
             tr
-              td=student.name
-              td=student.department
-              td=student.instructor_name
+              td=course.name
+              td=course.department
+              td=course.instructor_name
               td
-                a(href=`/courses/profile/${student.id}`) View Course
+                a(href=`/courses/profile/${course.id}`) View Course

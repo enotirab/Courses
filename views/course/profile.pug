@@ -3,13 +3,30 @@ extends ../layout
 block content
   div.content-container
     div.row
-      h1 #{student.name} -  #{student.department}
+      h1 #{course.name} -  #{course.department}
       div
-        a.button(href=`/courses/delete/${student.id}`) Delete
-        a.button(href=`/courses/edit/${student.id}`) Edit
-    div=student.instructor_name
-    p=student.description
+        a.button(href=`/courses/delete/${course.id}`) Delete
+        a.button(href=`/courses/edit/${course.id}`) Edit
+    div=course.instructor_name
+    p=course.description
 
 
     h3 Students
-    div todo
+    div
+      table
+        thead
+          tr
+            th First
+            th Last
+            th Grade
+            th
+        tbody
+          each student in course.students
+            tr
+              td=student.first_name
+              td=student.last_name
+              td=student.grade_level
+              td
+                a(href=`/students/profile/${student.id}`) View Student
+              td
+                a(href=`/courses/${course.id}/drop/${student.id}`) Drop Student
