@@ -9,10 +9,25 @@ html
 
       div.nav-content
         ul
-          li
-            a(href="/courses") Courses
-          li
-            a(href="/students") Students
+
+          if !user
+            li
+              a(href="/register-student") Register New Students
+            li
+              a(href="/register-staff") Register Staff
+            li
+              a(href="/login") Login
+          else
+            each menuItem in user.getMenuItems()
+              li
+                a(href=menuItem.link) #{menuItem.label}
+
+            li
+              a(href="#") Hello #{user.displayName}
+            li
+              a(href="/logout") Logout
+
       div
+
     div.container
       block content

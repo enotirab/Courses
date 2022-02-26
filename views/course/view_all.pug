@@ -2,8 +2,9 @@ extends ../layout
 
 block content
   div.content-container
-    div
-      a.button(href="/courses/add") Add Course
+    if user.can('Add Course')
+      div
+        a.button(href="/courses/add") Add Course
     table
         thead
           tr

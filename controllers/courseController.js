@@ -1,4 +1,4 @@
-const { Course, StudentCourses} = require('../models');
+const {Course, StudentCourses} = require('../models');
 const departments = [
     'Art',
     'English',
@@ -10,33 +10,44 @@ const departments = [
 ]
 
 //view all
-module.exports.viewAll = async function(req, res){
-   const courses = await Course.findAll({
-       order:[
-           ['name', 'asc'],
-           ['instructor_name', 'asc'],
-       ]
-   });
+module.exports.viewAll = async function (req, res) {
+    const courses = await Course.findAll({
+        order: [
+            ['name', 'asc'],
+            ['instructor_name', 'asc'],
+        ]
+    });
 
-   res.render('course/view_all', {
-       courses,
-   });
+    if (req.user) {
+        console.log({
+            'Enroll Self': req.user.can('Enroll Self'),
+            'View Students': req.user.can('View Students')
+        })
+    }
+
+    res.render('course/view_all', {
+        courses,
+    });
 }
 
 //view profile
-module.exports.viewProfile =  async function (req, res){
-    const course = await Course.findByPk(req.params.id, {
-        include: 'students',
-    });
+module.exports.viewProfile = async function (req, res) {
+    try {
+        const course = await Course.findByPk(req.params.id, {
+            include: 'students',
+        });
 
-    res.render('course/profile', {
-        course
-    });
+        res.render('course/profile', {
+            course
+        });
+    } catch (error) {
+        res.send(error);
+    }
 };
 
 
 //render Add form
-module.exports.renderAddForm = function(req, res){
+module.exports.renderAddForm = function (req, res) {
 
 
     const course = {
@@ -53,9 +64,8 @@ module.exports.renderAddForm = function(req, res){
 }
 
 
-
 // render Edit form
-module.exports.renderEditForm = async function(req, res){
+module.exports.renderEditForm = async function (req, res) {
 
     const course = await Course.findByPk(req.params.id);
 
@@ -67,7 +77,7 @@ module.exports.renderEditForm = async function(req, res){
 };
 
 // add
-module.exports.addCourse = async function(req, res){
+module.exports.addCourse = async function (req, res) {
 
 
     const form = {
@@ -84,7 +94,7 @@ module.exports.addCourse = async function(req, res){
 
 
 // update
-module.exports.updateCourse = async function(req, res){
+module.exports.updateCourse = async function (req, res) {
 
 
     const form = {
@@ -106,20 +116,20 @@ module.exports.updateCourse = async function(req, res){
 }
 
 //delete
-module.exports.deleteCourse = async function(req, res){
-   await Course.destroy({
-       where: {
-           id: req.params.id,
-       }
-   });
+module.exports.deleteCourse = async function (req, res) {
+    await Course.destroy({
+        where: {
+            id: req.params.id,
+        }
+    });
 
-   res.redirect('/courses');
+    res.redirect('/courses');
 };
 
-module.exports.dropCourse = async function(req, res){
+module.exports.dropCourse = async function (req, res) {
 
     await StudentCourses.destroy({
-        where:{
+        where: {
             student_id: req.params.studentId,
             course_id: req.params.courseId,
         }

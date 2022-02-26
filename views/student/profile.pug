@@ -5,7 +5,9 @@ block content
     div.row
       h3 #{student.first_name} #{student.last_name}
       div
-        a.button(href=`/students/delete/${student.id}`) Delete
+        if user.can('Delete Student')
+          a.button(href=`/students/delete/${student.id}`) Delete
+        if user.can('Edit Students') || user.can('Edit Self')
         a.button(href=`/students/edit/${student.id}`) Edit
     div Grade #{student.grade_level}
 
